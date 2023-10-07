@@ -9,15 +9,15 @@ function App() {
   useEffect(() => {
     async function fetchMessage() {
       try {
-        const response = await axios.get("/blog");
-        setMessage(response.data[0].message);
+        const response = await axios.get("api/blog");
+        setMessage(response.data.message);
       } catch (err) {
         console.log(err.message);
       }
     }
     fetchMessage();
   }, []);
-  return <h1>{message}</h1>;
+  return <h1 className="text-3xl font-bold underline">{message}</h1>;
 }
 
 export default App;

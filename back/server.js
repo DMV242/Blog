@@ -10,12 +10,10 @@ const cors = require("cors");
 
 app.use(cors());
 
-app.route("/blog").get((req, res) => {
-  res.status(200).send([
-    {
-      message: "enfin",
-    },
-  ]);
+app.route("/api/blog").get((req, res) => {
+  res.status(200).send({
+    message: "Bienvenue sur l'api de David",
+  });
 });
 
 app.listen(process.env.PORT, () => {
