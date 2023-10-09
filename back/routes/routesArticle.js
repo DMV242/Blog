@@ -4,6 +4,7 @@ import {
   updateArticle,
   getArticles,
   getOneArticle,
+  orderArticle,
 } from "../controllers/articleController";
 
 export function routeArticle(app) {
@@ -15,4 +16,5 @@ export function routeArticle(app) {
   // One article route
   app.route("/api/getOneArticle/:articleID").get(getOneArticle);
   //Filter article by catégories
+  app.route("/api/orderArticle").get(orderArticle);
 }
