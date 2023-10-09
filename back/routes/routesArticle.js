@@ -5,6 +5,7 @@ import {
   getArticles,
   getOneArticle,
   orderArticle,
+  articleWithAi,
 } from "../controllers/articleController";
 
 export function routeArticle(app) {
@@ -17,4 +18,6 @@ export function routeArticle(app) {
   app.route("/api/getOneArticle/:articleID").get(getOneArticle);
   //Filter article by catégories
   app.route("/api/orderArticle").get(orderArticle);
+  // Rediger article avec L'IA
+  app.route("/api/ArticleWithAI").post(articleWithAi);
 }
