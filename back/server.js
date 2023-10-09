@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-
 const { routeArticle } = require("./routes/routesArticle");
 
 (async () => {
@@ -16,8 +15,8 @@ const { routeArticle } = require("./routes/routesArticle");
 })();
 
 const corsOptions = {
-  origin: "http://localhost:3000", // L'origine de votre frontend React
-  optionsSuccessStatus: 200, // Uniquement pour des navigateurs plus anciens
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));

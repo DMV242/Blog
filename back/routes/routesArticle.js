@@ -16,7 +16,7 @@ export function routeArticle(app) {
   app.route("/api/getAllarticles").get(getArticles);
   // One article route
   app.route("/api/getOneArticle/:articleID").get(getOneArticle);
-  //Filter article by catégories
+  //Filter article by field
   app.route("/api/orderArticle").get(orderArticle);
   // Rediger article avec L'IA
   app.route("/api/ArticleWithAI").post(articleWithAi);

@@ -120,10 +120,7 @@ export const articleWithAi = async function (req, res) {
         title: prompt,
       }),
     };
-    const response = await fetch(
-      "https://api.textcortex.com/v1/texts/blogs",
-      options
-    );
+    const response = await fetch(process.env.AI_URL, options);
 
     const { data } = await response.json();
 
