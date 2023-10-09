@@ -1,6 +1,6 @@
 import { articleModel } from "../models/articlesModel";
 
-// CRUD ROUTES
+// ---------------------- CRUD ROUTES -----------------------------
 
 export const createArticle = async function (req, res) {
   const { title, content, description, categories } = req.query;
@@ -60,14 +60,13 @@ export const updateArticle = async function (req, res) {
       req.query,
       { new: true }
     );
-
     res.send(response);
   } catch (err) {
     res.status(500).send(err.message);
   }
 };
 
-// ORDER ROUTES
+//---------------------- ORDER ROUTES -----------------------------
 export const orderArticle = async function (req, res) {
   const { ob } = req.query;
   try {
@@ -88,8 +87,8 @@ export const orderArticle = async function (req, res) {
       res.send(articlesOrderByDate);
     }
     if (ob === "description") {
-      const articlesOrderByDate = await articleModel.find({}).sort(ob);
-      res.send(articlesOrderByDate);
+      const articlesOrderByDescription = await articleModel.find({}).sort(ob);
+      res.send(articlesOrderByDescription);
     }
   } catch (err) {
     res.status(500).json(err.message);
