@@ -136,6 +136,14 @@ export const articleWithAi = async function (req, res) {
 
 export const searchArticle = async function (req, res) {
   const { query, by } = req.query;
+
+  const regex = /[^\w\s]/g;
+  if (query.match(regex)) return;
+
+  if (!query) {
+    const data = await articleModel.find({});
+    return res.status(200).send(data);
+  }
   const queryRegExp = new RegExp(query);
 
   try {
@@ -161,7 +169,7 @@ export const searchArticle = async function (req, res) {
     }
   } catch (err) {
     res.status(404).json({
-      error: "No article found with this" + query,
+      error: "No article found with the " + query + " query",
       msg: err.message,
     });
   }
