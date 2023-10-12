@@ -106,7 +106,7 @@ export const articleWithAi = async function (req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + process.env.API_KEY,
+        Authorization: process.env.API_KEY,
       },
       body: JSON.stringify({
         context: context,
@@ -133,3 +133,36 @@ export const articleWithAi = async function (req, res) {
 };
 
 //---------------------- RESEARCH ROUTES -----------------------------
+
+export const searchArticle = async function (req, res) {
+  const { query, by } = req.query;
+  const queryRegExp = new RegExp(query);
+
+  try {
+    if (by === "categories") {
+      const articlesByCategories = await articleModel.find({
+        categories: queryRegExp,
+      });
+      if (articlesByCategories.length === 0)
+        throw new Error("article not found");
+      return res.status(200).send(articlesByCategories);
+    } else if (by === "content") {
+      const articlesByContent = await articleModel.find({
+        content: queryRegExp,
+      });
+      if (articlesByContent.length === 0) throw new Error("article not found");
+      return res.status(200).send(articlesByContent);
+    } else {
+      const articlesByTitle = await articleModel.find({
+        title: queryRegExp,
+      });
+      if (articlesByTitle.length === 0) throw new Error("article not found");
+      return res.status(200).send(articlesByTitle);
+    }
+  } catch (err) {
+    res.status(404).json({
+      error: "No article found with this" + query,
+      msg: err.message,
+    });
+  }
+};

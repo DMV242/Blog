@@ -1,4 +1,5 @@
 import {
+  searchArticle,
   createArticle,
   deleteArticle,
   updateArticle,
@@ -17,7 +18,9 @@ export function routeArticle(app) {
   // One article route
   app.route("/api/getOneArticle/:articleID").get(getOneArticle);
   //Filter article by field
-  app.route("/api/orderArticle").get(orderArticle);
-  // Rediger article avec L'IA
+  app.route("/api/orderArticle").post(orderArticle);
+  // write an article with AI
   app.route("/api/ArticleWithAI").post(articleWithAi);
+  // Research article
+  app.route("/api/searchArticle/").post(searchArticle);
 }

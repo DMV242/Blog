@@ -26,9 +26,14 @@ app.route("/api/blog").get((req, res) => {
     message: "Bienvenue sur l'api de David Mvoula",
   });
 });
+routeArticle(app);
+
+app.route("*").all((req, res) => {
+  res.status(400).json({
+    error: "this route " + req.originalUrl + " doesn't exist in this Api",
+  });
+});
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
-
-routeArticle(app);
