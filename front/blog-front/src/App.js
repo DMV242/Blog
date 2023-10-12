@@ -54,6 +54,7 @@ function App() {
                       key={article.title}
                       OnSelectArticle={setIdSelected}
                       onDelete={setArticleFounded}
+                      articleFounded={articleFounded}
                     />
                   ))
                 : articles.map((article) => (

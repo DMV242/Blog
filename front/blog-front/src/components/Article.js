@@ -5,17 +5,37 @@ const Article = ({ article, OnSelectArticle, onDelete }) => {
     OnSelectArticle((lastID) => (newID === lastID ? null : newID));
   }
 
-  function handleDelete(id) {
-    const deleteArticle = async () => {
-      await axios.delete(`http://localhost:5000/api/deleteArticle/${id}`);
-    };
+  // function handleDelete(id) {
+  //   console.log("entrer");
+  //   const deleteArticle = async () => {
+  //     await axios.delete(`http://localhost:5000/api/deleteArticle/${id}`);
+  //   };
+  //   const confirmation = window.confirm(
+  //     "Etes vous de vouloir supprimer cet article ?"
+  //   );
+
+  //   onDelete([]);
+  //   deleteArticle();
+  // }
+  async function handleDelete(id) {
+    console.log("entrer");
     const confirmation = window.confirm(
-      "Etes vous de vouloir supprimer cet article ?"
+      "Etes-vous sûr de vouloir supprimer cet article ?"
     );
-    if (!confirmation) return;
-    onDelete([]);
-    deleteArticle();
+
+    if (confirmation) {
+      try {
+        await axios.delete(`http://localhost:5000/api/deleteArticle/${id}`);
+        onDelete([]);
+      } catch (error) {
+        console.error(
+          "Une erreur s'est produite lors de la suppression de l'article :",
+          error
+        );
+      }
+    }
   }
+
   return (
     <li className="flex flex-col p-5 bg-slate-800 mb-2 rounded-xl hover:translate-x-3 transition-transform">
       <h2 className="text-3xl text-white underline uppercase">
