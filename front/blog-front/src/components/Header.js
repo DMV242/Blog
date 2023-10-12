@@ -1,5 +1,3 @@
-import { Input } from "antd";
-import axios from "axios";
 import { useState } from "react";
 
 const Header = ({ onSearch }) => {
