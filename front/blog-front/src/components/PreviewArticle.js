@@ -12,7 +12,7 @@ const PreviewArticle = ({
   useEffect(() => {
     async function fetchArticle() {
       const articleData = axios.get(
-        `http://localhost:5000/api/getOneArticle/${idSelected}`
+        `https://blog-api-wu4d.onrender.com/api/getOneArticle/${idSelected}`
       );
       setArticle((await articleData).data);
     }

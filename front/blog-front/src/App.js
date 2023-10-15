@@ -22,7 +22,9 @@ function App() {
 
   useEffect(() => {
     const fetchAllarticles = async () => {
-      const data = await axios.get("http://localhost:5000/api/getAllarticles");
+      const data = await axios.get(
+        "https://blog-api-wu4d.onrender.com/api/getAllarticles"
+      );
       setArticles(data.data);
     };
     fetchAllarticles();
@@ -35,7 +37,9 @@ function App() {
 
     if (confirmation) {
       try {
-        await axios.delete(`http://localhost:5000/api/deleteArticle/${id}`);
+        await axios.delete(
+          `https://blog-api-wu4d.onrender.com/api/deleteArticle/${id}`
+        );
 
         if (context === "ArticlePreview") {
           setIdSelected(null);
@@ -58,7 +62,7 @@ function App() {
   const handleSearch = async (query) => {
     try {
       const articleFind = await axios.post(
-        `http://localhost:5000/api/searchArticle/?by=content&query=${query}`
+        `https://blog-api-wu4d.onrender.com/api/searchArticle/?by=content&query=${query}`
       );
       if (!query) {
         setArticleFounded([]);

@@ -19,20 +19,25 @@ const Form = ({ idSelected, article, context }) => {
     e.preventDefault();
     try {
       if (context === "update") {
-        axios.put(`http://localhost:5000/api/updateArticle/${idSelected}`, {
-          data: {
-            title: title ? title : article.title,
-            content: content ? content : article.content,
-            categories: categories ? categories : article.categories.join(","),
-            description: description ? description : article.description,
-          },
-        });
+        axios.put(
+          `https://blog-api-wu4d.onrender.com/api/updateArticle/${idSelected}`,
+          {
+            data: {
+              title: title ? title : article.title,
+              content: content ? content : article.content,
+              categories: categories
+                ? categories
+                : article.categories.join(","),
+              description: description ? description : article.description,
+            },
+          }
+        );
         api["success"]({
           message: "article successfully updated 🎉",
           placement: "bottomRight",
         });
       } else if (context === "create") {
-        axios.post("http://localhost:5000/api/addArticle", {
+        axios.post("https://blog-api-wu4d.onrender.com/api/addArticle", {
           content,
           title,
           description,
