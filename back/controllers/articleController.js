@@ -17,7 +17,7 @@ export const createArticle = async function (req, res) {
     const data = await newArticle.save();
     res.send(data);
   } catch (err) {
-    res.status(500).send({ message: err });
+    res.status(500).send({ message: err.message });
   }
 };
 export const getOneArticle = async function (req, res) {

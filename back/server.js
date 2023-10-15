@@ -16,7 +16,7 @@ const { routeArticle } = require("./routes/routesArticle");
 })();
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://blog-mern-dmv242.netlify.app",
   optionsSuccessStatus: 200,
 };
 
