@@ -1,6 +1,12 @@
 import { useState } from "react";
 
-const Header = ({ onSearch }) => {
+const Header = ({
+  onSearch,
+  onCreate,
+  showUpdateForm,
+  idSelected,
+  article,
+}) => {
   const [query, setQuery] = useState("");
   const [isloading, setIsloading] = useState(false);
 
@@ -10,6 +16,13 @@ const Header = ({ onSearch }) => {
     await onSearch(query);
     setIsloading(false);
     setQuery("");
+  }
+
+  function handleShowForm() {
+    onCreate((v) => !v);
+    idSelected(null);
+    article({});
+    showUpdateForm(false);
   }
 
   return (
@@ -27,6 +40,22 @@ const Header = ({ onSearch }) => {
             {isloading ? "wait please" : "search for article"}
           </button>
         </form>
+      </div>
+      <div>
+        <button
+          className="bg-sky-500/75 p-2 text-white"
+          type="submit"
+          onClick={handleShowForm}
+        >
+          create article
+        </button>
+        <button
+          className="bg-sky-500/75 p-2 text-white ml-4"
+          type="submit"
+          onClick={handleShowForm}
+        >
+          create article with AI ✨
+        </button>
       </div>
     </header>
   );

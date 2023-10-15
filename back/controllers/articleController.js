@@ -4,7 +4,8 @@ import { articleModel } from "../models/articlesModel";
 // ---------------------- CRUD ROUTES -----------------------------
 
 export const createArticle = async function (req, res) {
-  const { title, content, description, categories } = req.query;
+  const { title, content, description, categories } = req.body;
+
   try {
     const newArticle = new articleModel({
       title,
@@ -53,12 +54,20 @@ export const getArticles = async function (req, res) {
 };
 
 export const updateArticle = async function (req, res) {
+  const { title, content, categories, description } = req.body.data;
+  const categoriesArr = categories.split(",");
+
   try {
     const response = await articleModel.findByIdAndUpdate(
       {
         _id: req.params.articleID,
       },
-      req.query,
+      {
+        title,
+        content,
+        description,
+        categoriesArr,
+      },
       { new: true }
     );
     res.send(response);

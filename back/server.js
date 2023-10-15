@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const { routeArticle } = require("./routes/routesArticle");
 
 (async () => {
@@ -19,6 +20,9 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 app.route("/api/blog").get((req, res) => {

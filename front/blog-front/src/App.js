@@ -6,12 +6,19 @@ import axios from "axios";
 import Box from "./components/Box";
 import Header from "./components/Header";
 import PreviewArticle from "./components/PreviewArticle";
+import Form from "./components/Form.js";
+import React from "react";
+import { notification } from "antd";
 
 function App() {
+  const [api, contextHolder] = notification.useNotification();
   const [idSelected, setIdSelected] = useState(null);
   const [articles, setArticles] = useState([]);
   const [articleFounded, setArticleFounded] = useState([]);
   const [error, setError] = useState("");
+  const [article, setArticle] = useState({});
+  const [formVisible, setformVisible] = useState(false);
+  const [formCreateVisible, setFormCreateVisible] = useState(false);
 
   useEffect(() => {
     const fetchAllarticles = async () => {
@@ -21,6 +28,33 @@ function App() {
     fetchAllarticles();
   }, [articles, articleFounded]);
 
+  async function handleDelete(id, context = "") {
+    const confirmation = window.confirm(
+      "Etes-vous sûr de vouloir supprimer cet article ?"
+    );
+
+    if (confirmation) {
+      try {
+        await axios.delete(`http://localhost:5000/api/deleteArticle/${id}`);
+
+        if (context === "ArticlePreview") {
+          setIdSelected(null);
+        }
+
+        setArticleFounded([]);
+        api["success"]({
+          message: "article deleted with success",
+          placement: "bottomRight",
+        });
+      } catch (error) {
+        console.error(
+          "Une erreur s'est produite lors de la suppression de l'article :",
+          error
+        );
+      }
+    }
+  }
+
   const handleSearch = async (query) => {
     try {
       const articleFind = await axios.post(
@@ -28,18 +62,36 @@ function App() {
       );
       if (!query) {
         setArticleFounded([]);
+        setError("");
         return;
       }
+
       setArticleFounded(articleFind.data);
       setError("");
+
+      api["info"]({
+        message: "article founded " + articleFind.data.length,
+        placement: "bottomRight",
+      });
     } catch (err) {
       setError(err.response.data.error + " 😅");
+      api["error"]({
+        message: err.response.data.error + " 😅",
+        placement: "bottomLeft",
+      });
     }
   };
 
   return (
     <div>
-      <Header onSearch={handleSearch} />
+      {contextHolder}
+      <Header
+        onSearch={handleSearch}
+        onCreate={setFormCreateVisible}
+        showUpdateForm={setformVisible}
+        idSelected={setIdSelected}
+        article={setArticle}
+      />
       <Container>
         <Box>
           {error && (
@@ -53,8 +105,9 @@ function App() {
                       article={article}
                       key={article.title}
                       OnSelectArticle={setIdSelected}
-                      onDelete={setArticleFounded}
                       articleFounded={articleFounded}
+                      onDelete={handleDelete}
+                      showFormCreate={setFormCreateVisible}
                     />
                   ))
                 : articles.map((article) => (
@@ -62,12 +115,35 @@ function App() {
                       article={article}
                       key={article.title}
                       OnSelectArticle={setIdSelected}
+                      onDelete={handleDelete}
+                      showFormCreate={setFormCreateVisible}
                     />
                   ))}
             </ul>
           )}
         </Box>
-        <Box>{idSelected && <PreviewArticle idSelected={idSelected} />}</Box>
+        <Box>
+          {idSelected && (
+            <>
+              <PreviewArticle
+                idSelected={idSelected}
+                onDelete={handleDelete}
+                onEdit={setformVisible}
+                setArticle={setArticle}
+                article={article}
+                showFormCreate={setFormCreateVisible}
+              />
+              {formVisible && (
+                <Form
+                  idSelected={idSelected}
+                  article={article}
+                  context={"update"}
+                />
+              )}
+            </>
+          )}
+          {formCreateVisible && <Form context={"create"} />}
+        </Box>
       </Container>
     </div>
   );
