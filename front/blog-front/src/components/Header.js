@@ -44,16 +44,11 @@ const Header = ({
       <div>
         <button
           className="bg-sky-500/75 p-2 text-white"
-          type="submit"
           onClick={handleShowForm}
         >
           create article
         </button>
-        <button
-          className="bg-sky-500/75 p-2 text-white ml-4"
-          type="submit"
-          onClick={handleShowForm}
-        >
+        <button className="bg-sky-500/75 p-2 text-white ml-4">
           create article with AI ✨
         </button>
       </div>
