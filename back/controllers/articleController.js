@@ -149,40 +149,42 @@ export const searchArticle = async function (req, res) {
   const regex = /[^\w\s]/g;
   if (query.match(regex))
     return res.status(404).json({
-      error: "Special character is not allowed 😒",
+      error: "Charcater special is not allowed 😒",
       msg: err.message,
     });
-};
 
-if (!query) {
-  const data = await articleModel.find({});
-  return res.status(200).send(data);
-}
-const queryRegExp = new RegExp(query.toLowerCase());
-
-try {
-  if (by === "categories") {
-    const articlesByCategories = await articleModel.find({
-      categories: queryRegExp,
-    });
-    if (articlesByCategories.length === 0) throw new Error("article not found");
-    return res.status(200).send(articlesByCategories);
-  } else if (by === "content") {
-    const articlesByContent = await articleModel.find({
-      content: queryRegExp,
-    });
-    if (articlesByContent.length === 0) throw new Error("article not found");
-    return res.status(200).send(articlesByContent);
-  } else {
-    const articlesByTitle = await articleModel.find({
-      title: queryRegExp,
-    });
-    if (articlesByTitle.length === 0) throw new Error("article not found");
-    return res.status(200).send(articlesByTitle);
+  if (!query) {
+    const data = await articleModel.find({});
+    return res.status(200).send(data);
   }
-} catch (err) {
-  res.status(404).json({
-    error: "No article found with the " + query + " query",
-    msg: err.message,
-  });
-}
+  const queryLower = query.toLowerCase();
+  const queryRegExp = new RegExp(queryLower);
+
+  try {
+    if (by === "categories") {
+      const articlesByCategories = await articleModel.find({
+        categories: queryRegExp,
+      });
+      if (articlesByCategories.length === 0)
+        throw new Error("article not found");
+      return res.status(200).send(articlesByCategories);
+    } else if (by === "content") {
+      const articlesByContent = await articleModel.find({
+        content: queryRegExp,
+      });
+      if (articlesByContent.length === 0) throw new Error("article not found");
+      return res.status(200).send(articlesByContent);
+    } else {
+      const articlesByTitle = await articleModel.find({
+        title: queryRegExp,
+      });
+      if (articlesByTitle.length === 0) throw new Error("article not found");
+      return res.status(200).send(articlesByTitle);
+    }
+  } catch (err) {
+    res.status(404).json({
+      error: "No article found with the " + query + " query",
+      msg: err.message,
+    });
+  }
+};
