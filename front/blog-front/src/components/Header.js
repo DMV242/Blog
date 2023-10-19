@@ -4,8 +4,8 @@ const Header = ({
   onSearch,
   onCreate,
   showUpdateForm,
-  idSelected,
-  article,
+
+  showModal,
 }) => {
   const [query, setQuery] = useState("");
   const [isloading, setIsloading] = useState(false);
@@ -16,19 +16,22 @@ const Header = ({
     await onSearch(query);
     setIsloading(false);
     setQuery("");
+    showModal(false);
   }
 
   function handleShowForm() {
-    onCreate((v) => !v);
-    idSelected(null);
-    article({});
+    onCreate(true);
     showUpdateForm(false);
+    showModal(true);
   }
 
   return (
-    <header className=" bg-sky-500/75 p-5 flex items-center justify-items-center justify-between">
-      <h1 className="text-4xl m-4 text-white font-bold"> Blog AI✍🏽</h1>
-      <div>
+    <header className=" bg-sky-500/75 p-5 md:flex items-center justify-items-center justify-between">
+      <h1 className="text-4xl m-4 text-center text-white font-bold ">
+        {" "}
+        Blog AI✍🏽
+      </h1>
+      <div className="mb-3 md:mb-0">
         <form onSubmit={handleSubmit}>
           <input
             type="search"
@@ -41,7 +44,7 @@ const Header = ({
           </button>
         </form>
       </div>
-      <div>
+      <div className="flex ">
         <button
           className="bg-sky-500/75 p-2 text-white"
           onClick={handleShowForm}

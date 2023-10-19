@@ -8,9 +8,10 @@ import Header from "./components/Header";
 import PreviewArticle from "./components/PreviewArticle";
 import Form from "./components/Form.js";
 import React from "react";
-import { notification } from "antd";
+import { notification, Modal } from "antd";
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [idSelected, setIdSelected] = useState(null);
   const [articles, setArticles] = useState([]);
@@ -20,14 +21,25 @@ function App() {
   const [formVisible, setformVisible] = useState(false);
   const [formCreateVisible, setFormCreateVisible] = useState(false);
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
+    const controller = new AbortController();
     const fetchAllarticles = async () => {
       const data = await axios.get(
-        "https://blog-api-wu4d.onrender.com/api/getAllarticles"
+        "https://blog-api-wu4d.onrender.com/api/getAllarticles",
+        {
+          signal: controller.signal,
+        }
       );
       setArticles(data.data);
     };
     fetchAllarticles();
+    return function () {
+      controller.abort();
+    };
   }, [articles, articleFounded]);
 
   async function handleDelete(id, context = "") {
@@ -93,8 +105,7 @@ function App() {
         onSearch={handleSearch}
         onCreate={setFormCreateVisible}
         showUpdateForm={setformVisible}
-        idSelected={setIdSelected}
-        article={setArticle}
+        showModal={setIsModalOpen}
       />
       <Container>
         <Box>
@@ -126,7 +137,7 @@ function App() {
             </ul>
           )}
         </Box>
-        <Box>
+        <Box context={"preview"}>
           {idSelected && (
             <>
               <PreviewArticle
@@ -136,17 +147,41 @@ function App() {
                 setArticle={setArticle}
                 article={article}
                 showFormCreate={setFormCreateVisible}
+                showModal={setIsModalOpen}
               />
               {formVisible && (
-                <Form
-                  idSelected={idSelected}
-                  article={article}
-                  context={"update"}
-                />
+                <Modal
+                  open={isModalOpen}
+                  onCancel={handleCancel}
+                  width={600}
+                  okButtonProps={{
+                    style: {
+                      display: "none",
+                    },
+                  }}
+                >
+                  <Form
+                    idSelected={idSelected}
+                    article={article}
+                    context={"update"}
+                  />
+                </Modal>
               )}
             </>
           )}
-          {formCreateVisible && <Form context={"create"} />}
+          {formCreateVisible && (
+            <Modal
+              open={isModalOpen}
+              onCancel={handleCancel}
+              okButtonProps={{
+                style: {
+                  display: "none",
+                },
+              }}
+            >
+              <Form context={"create"} />
+            </Modal>
+          )}
         </Box>
       </Container>
     </div>

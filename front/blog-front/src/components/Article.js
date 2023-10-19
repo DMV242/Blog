@@ -10,11 +10,13 @@ const Article = ({ article, OnSelectArticle, onDelete, showFormCreate }) => {
 
   return (
     <li className="flex flex-col p-5 bg-slate-800 mb-2 rounded-xl hover:translate-x-3 transition-transform">
-      <h2 className="text-3xl text-white underline uppercase mb-5">
+      <h2 className="text-2xl md:text-3xl text-white underline uppercase mb-5">
         {article.title}
       </h2>
-      <p className="italic text-gray-300 mb-2.5">{article.description}</p>
-      <p className="text-xl text-white mb-4">
+      <p className="text-sm  md:text-lg italic text-gray-300 mb-2.5">
+        {article.description}
+      </p>
+      <p className="text-lg md:text-xl text-white mb-4">
         {article.content.split(" ").slice(0, 24).join(" ") + " ..."}
       </p>
       <div className="p-3">

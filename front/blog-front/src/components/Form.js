@@ -1,6 +1,6 @@
 import axios from "axios";
 import { notification } from "antd";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 
 const Form = ({ idSelected, article, context }) => {
   const [description, setDescription] = useState(
@@ -68,24 +68,32 @@ const Form = ({ idSelected, article, context }) => {
       <form className="flex" method="post" onSubmit={handleSubmit}>
         {contextHolder}
         <div className="flex flex-col gap-3 w-48">
-          <label className="text-xl font-bold font-mono mb-5">Title : </label>
+          <label className="text-sm md:text-xl font-bold font-mono mb-5">
+            Title :{" "}
+          </label>
           <br />
 
-          <label className="text-xl font-bold font-mono">Description : </label>
+          <label className="text-sm md:text-xl font-bold font-mono mb-2  md:mb-5">
+            Description:{" "}
+          </label>
           <br />
 
-          <label className="text-xl font-bold font-mono">Catégories : </label>
+          <label className="text-sm md:text-xl font-bold font-mono mb-5">
+            Catégories :
+          </label>
           <br />
 
-          <label className="text-xl font-bold font-mono">Content : </label>
+          <label className="text-sm md:text-xl font-bold font-mono md:mb-5">
+            Content :{" "}
+          </label>
           <br />
         </div>
-        <div className="flex flex-col gap-3 grow ">
+        <div className="flex flex-col gap-3 grow">
           <input
             type="text"
             id="title"
             placeholder="title"
-            className="p-2 outline-none focus:outline-sky-600 transition"
+            className="p-2 outline-none focus:outline-sky-600 transition bg-slate-400 placeholder:text-white"
             name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -96,7 +104,7 @@ const Form = ({ idSelected, article, context }) => {
             id="description"
             type="text"
             placeholder="Description"
-            className="p-2 outline-none focus:outline-sky-600 transition"
+            className="p-2 outline-none focus:outline-sky-600 transition bg-slate-400 placeholder:text-white"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
@@ -106,13 +114,13 @@ const Form = ({ idSelected, article, context }) => {
             id="categories"
             type="text"
             placeholder="Catégories"
-            className="p-2 outline-none focus:outline-sky-600 transition"
+            className="p-2 outline-none focus:outline-sky-600 transition bg-slate-400 placeholder:text-white"
             value={categories}
             onChange={(e) => setCategories(e.target.value)}
           />
           <br />
           <textarea
-            className="p-2 outline-none focus:outline-sky-600 transition"
+            className="p-2 outline-none focus:outline-sky-600 transition bg-slate-400 placeholder:text-white"
             name="content"
             id="content"
             value={content}

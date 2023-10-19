@@ -17,6 +17,7 @@ const { routeArticle } = require("./routes/routesArticle");
 
 const corsOptions = {
   origin: ["https://blog-mern-dmv242.netlify.app", "http://localhost:3000"],
+
   optionsSuccessStatus: 200,
 };
 
