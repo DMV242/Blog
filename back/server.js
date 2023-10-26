@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { routeArticle } = require("./routes/routesArticle");
+const { routesUsers } = require("./routes/routesUsers");
 
 (async () => {
   try {
@@ -31,6 +32,8 @@ app.route("/api/blog").get((req, res) => {
     message: "Bienvenue sur l'api de David Mvoula",
   });
 });
+
+routesUsers(app);
 routeArticle(app);
 
 app.route("*").all((req, res) => {

@@ -1,4 +1,10 @@
-const Article = ({ article, OnSelectArticle, onDelete, showFormCreate }) => {
+const Article = ({
+  article,
+  OnSelectArticle,
+  onDelete,
+  showFormCreate,
+  user,
+}) => {
   function handleSelectId(newID) {
     showFormCreate(false);
     OnSelectArticle((lastID) => (newID === lastID ? null : newID));
@@ -26,12 +32,14 @@ const Article = ({ article, OnSelectArticle, onDelete, showFormCreate }) => {
         >
           Select ✅
         </button>
-        <button
-          className="bg-red-100 text-center p-2 rounded-xl font-bold hover:bg-red-400 transition"
-          onClick={() => handleDelete(article._id)}
-        >
-          delete ❌
-        </button>
+        {user && (
+          <button
+            className="bg-red-100 text-center p-2 rounded-xl font-bold hover:bg-red-400 transition"
+            onClick={() => handleDelete(article._id)}
+          >
+            delete ❌
+          </button>
+        )}
       </div>
     </li>
   );

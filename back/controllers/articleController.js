@@ -4,7 +4,7 @@ import { articleModel } from "../models/articlesModel";
 // ---------------------- CRUD ROUTES -----------------------------
 
 export const createArticle = async function (req, res) {
-  const { title, content, description, categories } = req.body;
+  const { title, content, description, categories, id } = req.body;
 
   try {
     const newArticle = new articleModel({
@@ -12,6 +12,7 @@ export const createArticle = async function (req, res) {
       content,
       description,
       categories: categories.split(","),
+      author: id,
     });
 
     const data = await newArticle.save();

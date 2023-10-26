@@ -9,8 +9,13 @@ import PreviewArticle from "./components/PreviewArticle";
 import Form from "./components/Form.js";
 import React from "react";
 import { notification, Modal } from "antd";
+import { API_URL } from "./config";
+import AuthForm from "./components/AuthForm";
 
 function App() {
+  const [signUpForm, setSignUpForm] = useState(true);
+  const [signInForm, setSignInform] = useState(false);
+  const [user, setUser] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [idSelected, setIdSelected] = useState(null);
@@ -26,21 +31,29 @@ function App() {
   };
 
   useEffect(() => {
-    const controller = new AbortController();
+    const abortController = new AbortController();
     const fetchAllarticles = async () => {
-      const data = await axios.get(
-        "https://blog-api-wu4d.onrender.com/api/getAllarticles",
-        {
-          signal: controller.signal,
+      try {
+        const data = axios.get(API_URL + "/api/getAllarticles", {
+          signal: abortController.signal,
+        });
+        const allArticles = await data;
+
+        setArticles(allArticles.data);
+      } catch (err) {
+        if (axios.isCancel(err)) {
+          console.log("La requête a été annulée", err.message);
+        } else {
+          console.log("erreur ", err.message);
+          console.log("err", err.name);
         }
-      );
-      setArticles(data.data);
+      }
     };
     fetchAllarticles();
     return function () {
-      controller.abort();
+      abortController.abort();
     };
-  }, [articles, articleFounded]);
+  }, []);
 
   async function handleDelete(id, context = "") {
     const confirmation = window.confirm(
@@ -49,12 +62,11 @@ function App() {
 
     if (confirmation) {
       try {
-        await axios.delete(
-          `https://blog-api-wu4d.onrender.com/api/deleteArticle/${id}`
-        );
+        await axios.delete(`${API_URL}/api/deleteArticle/${id}`);
 
         if (context === "ArticlePreview") {
           setIdSelected(null);
+          setArticle({});
         }
 
         setArticleFounded([]);
@@ -74,7 +86,7 @@ function App() {
   const handleSearch = async (query) => {
     try {
       const articleFind = await axios.post(
-        `https://blog-api-wu4d.onrender.com/api/searchArticle/?by=content&query=${query}`
+        `${API_URL}/api/searchArticle/?by=content&query=${query}`
       );
       if (!query) {
         setArticleFounded([]);
@@ -101,13 +113,18 @@ function App() {
   return (
     <div>
       {contextHolder}
+
       <Header
         onSearch={handleSearch}
         onCreate={setFormCreateVisible}
         showUpdateForm={setformVisible}
         showModal={setIsModalOpen}
+        user={user}
+        setUser={setUser}
+        signInForm={setSignInform}
+        signUpForm={setSignUpForm}
       />
-      <Container>
+      <Container idSelected={idSelected}>
         <Box>
           {error && (
             <p className="text-center text-red-600 text-2xl"> {error}</p>
@@ -123,6 +140,7 @@ function App() {
                       articleFounded={articleFounded}
                       onDelete={handleDelete}
                       showFormCreate={setFormCreateVisible}
+                      user={user}
                     />
                   ))
                 : articles.map((article) => (
@@ -132,14 +150,16 @@ function App() {
                       OnSelectArticle={setIdSelected}
                       onDelete={handleDelete}
                       showFormCreate={setFormCreateVisible}
+                      user={user}
                     />
                   ))}
             </ul>
           )}
         </Box>
-        <Box context={"preview"}>
-          {idSelected && (
-            <>
+
+        {idSelected && (
+          <Box context={"preview"}>
+            {idSelected && (
               <PreviewArticle
                 idSelected={idSelected}
                 onDelete={handleDelete}
@@ -148,41 +168,80 @@ function App() {
                 article={article}
                 showFormCreate={setFormCreateVisible}
                 showModal={setIsModalOpen}
+                user={user}
               />
-              {formVisible && (
-                <Modal
-                  open={isModalOpen}
-                  onCancel={handleCancel}
-                  width={600}
-                  okButtonProps={{
-                    style: {
-                      display: "none",
-                    },
-                  }}
-                >
-                  <Form
-                    idSelected={idSelected}
-                    article={article}
-                    context={"update"}
-                  />
-                </Modal>
-              )}
-            </>
-          )}
-          {formCreateVisible && (
-            <Modal
-              open={isModalOpen}
-              onCancel={handleCancel}
-              okButtonProps={{
-                style: {
-                  display: "none",
-                },
-              }}
-            >
-              <Form context={"create"} />
-            </Modal>
-          )}
-        </Box>
+            )}
+          </Box>
+        )}
+        {formVisible && (
+          <Modal
+            open={isModalOpen}
+            onCancel={handleCancel}
+            width={600}
+            okButtonProps={{
+              style: {
+                display: "none",
+              },
+            }}
+          >
+            <Form
+              idSelected={idSelected}
+              article={article}
+              context={"update"}
+              user={user}
+            />
+          </Modal>
+        )}
+
+        {formCreateVisible && (
+          <Modal
+            open={isModalOpen}
+            onCancel={handleCancel}
+            okButtonProps={{
+              style: {
+                display: "none",
+              },
+            }}
+          >
+            <Form context={"create"} user={user} />
+          </Modal>
+        )}
+        {signInForm && (
+          <Modal
+            open={isModalOpen}
+            onCancel={handleCancel}
+            width={600}
+            okButtonProps={{
+              style: {
+                display: "none",
+              },
+            }}
+          >
+            <AuthForm
+              context={"signin"}
+              user={setUser}
+              showModal={setIsModalOpen}
+            />
+          </Modal>
+        )}
+        {signUpForm && (
+          <Modal
+            open={isModalOpen}
+            onCancel={handleCancel}
+            width={600}
+            okButtonProps={{
+              style: {
+                display: "none",
+              },
+            }}
+          >
+            <AuthForm
+              context={"signup"}
+              user={setUser}
+              showModal={setIsModalOpen}
+            />
+          </Modal>
+        )}
       </Container>
     </div>
   );

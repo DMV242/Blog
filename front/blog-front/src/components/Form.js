@@ -1,8 +1,9 @@
 import axios from "axios";
 import { notification } from "antd";
 import { useState } from "react";
+import { API_URL } from "../config";
 
-const Form = ({ idSelected, article, context }) => {
+const Form = ({ idSelected, article, context, user }) => {
   const [description, setDescription] = useState(
     context === "create" ? "" : article.description
   );
@@ -19,29 +20,25 @@ const Form = ({ idSelected, article, context }) => {
     e.preventDefault();
     try {
       if (context === "update") {
-        axios.put(
-          `https://blog-api-wu4d.onrender.com/api/updateArticle/${idSelected}`,
-          {
-            data: {
-              title: title ? title : article.title,
-              content: content ? content : article.content,
-              categories: categories
-                ? categories
-                : article.categories.join(","),
-              description: description ? description : article.description,
-            },
-          }
-        );
+        axios.put(`${API_URL}/api/updateArticle/${idSelected}`, {
+          data: {
+            title: title ? title : article.title,
+            content: content ? content : article.content,
+            categories: categories ? categories : article.categories.join(","),
+            description: description ? description : article.description,
+          },
+        });
         api["success"]({
           message: "article successfully updated 🎉",
           placement: "bottomRight",
         });
       } else if (context === "create") {
-        axios.post("https://blog-api-wu4d.onrender.com/api/addArticle", {
+        axios.post(API_URL + "/api/addArticle", {
           content,
           title,
           description,
           categories,
+          id: user._id,
         });
         api["success"]({
           message: "article successfully created 🎉",

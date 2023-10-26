@@ -25,6 +25,10 @@ const articleSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  author: {
+    type: String,
+    required: [true, "We need to know the author"],
+  },
 
   categories: [String],
 });

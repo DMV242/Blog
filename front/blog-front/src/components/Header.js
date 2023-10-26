@@ -4,8 +4,11 @@ const Header = ({
   onSearch,
   onCreate,
   showUpdateForm,
-
   showModal,
+  user,
+  signInForm,
+  signUpForm,
+  setUser,
 }) => {
   const [query, setQuery] = useState("");
   const [isloading, setIsloading] = useState(false);
@@ -45,15 +48,48 @@ const Header = ({
         </form>
       </div>
       <div className="flex ">
-        <button
-          className="bg-sky-500/75 p-2 text-white"
-          onClick={handleShowForm}
-        >
-          create article
-        </button>
-        <button className="bg-sky-500/75 p-2 text-white ml-4">
-          create article with AI ✨
-        </button>
+        {user ? (
+          <>
+            <button
+              className="bg-sky-500/75 p-2 text-white"
+              onClick={handleShowForm}
+            >
+              create article
+            </button>
+            <button className="bg-sky-500/75 p-2 text-white ml-4">
+              create article with AI ✨
+            </button>
+            <button
+              className="bg-sky-500/75 p-2 text-white ml-4"
+              onClick={() => setUser("")}
+            >
+              Log out ❌
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              className="bg-sky-500/75 p-2 text-white md:mr-3"
+              onClick={() => {
+                signUpForm(true);
+                signInForm(false);
+                showModal(true);
+              }}
+            >
+              create a account for more features 😊
+            </button>
+            <button
+              className="bg-sky-500/75 p-2 text-white"
+              onClick={() => {
+                signInForm(true);
+                signUpForm(false);
+                showModal(true);
+              }}
+            >
+              Sign In 🪪
+            </button>
+          </>
+        )}
       </div>
     </header>
   );
