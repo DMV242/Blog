@@ -54,10 +54,10 @@ const Header = ({
               className="bg-sky-500/75 p-2 text-white"
               onClick={handleShowForm}
             >
-              create article
+              create an article
             </button>
             <button className="bg-sky-500/75 p-2 text-white ml-4">
-              create article with AI ✨
+              create an article with AI ✨
             </button>
             <button
               className="bg-sky-500/75 p-2 text-white ml-4"
@@ -76,7 +76,7 @@ const Header = ({
                 showModal(true);
               }}
             >
-              create a account for more features 😊
+              create an account for more features 😊
             </button>
             <button
               className="bg-sky-500/75 p-2 text-white"

@@ -30,11 +30,7 @@ const AuthForm = function ({ context, user, showModal }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    try {
-      await SignInUserOrsignUp();
-    } catch (err) {
-      console.log(err.message);
-    }
+    await SignInUserOrsignUp();
   }
 
   return (

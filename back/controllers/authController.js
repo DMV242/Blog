@@ -29,6 +29,11 @@ export const signUp = async function (req, res, next) {
         "the password is too shorter . You need to give at least 8 characters"
       );
     }
+    const userAlready = UserModel.findOne({ email });
+    if (userAlready) {
+      throw new Error("this email has been used by another account");
+    }
+
     const newUser = await UserModel.create({ email, password });
     const token = signToken(newUser._id);
     return res.status(201).send({ user: newUser, token });

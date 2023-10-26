@@ -158,7 +158,7 @@ function App() {
         </Box>
 
         {idSelected && (
-          <Box context={"preview"}>
+          <Box context={"preview"} setIdSelected={setIdSelected}>
             {idSelected && (
               <PreviewArticle
                 idSelected={idSelected}
