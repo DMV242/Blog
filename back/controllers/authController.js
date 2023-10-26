@@ -30,7 +30,7 @@ export const signUp = async function (req, res, next) {
       );
     }
     const userAlready = await UserModel.findOne({ email });
-    console.log(userAlready);
+
     if (userAlready) {
       throw new Error("this email has been used by another account");
     }
