@@ -15,6 +15,8 @@ const AuthForm = function ({ context, user, showModal }) {
         email,
         password,
       });
+      setEmail("");
+      setPassword("");
 
       api["success"]({
         message: "welcome to blog AI 🖖🏽",
