@@ -65,10 +65,10 @@ const AuthForm = function ({ context, user, showModal }) {
           />
           <br />
           <input
-            name="description"
+            name="password"
             id="password"
             type="password"
-            placeholder="Description"
+            placeholder="password"
             className="p-2 outline-none focus:outline-sky-600 transition bg-slate-400 placeholder:text-white"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

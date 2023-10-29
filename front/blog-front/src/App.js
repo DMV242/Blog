@@ -13,7 +13,7 @@ import { API_URL } from "./config";
 import AuthForm from "./components/AuthForm";
 
 function App() {
-  const [signUpForm, setSignUpForm] = useState(true);
+  const [signUpForm, setSignUpForm] = useState(false);
   const [signInForm, setSignInform] = useState(false);
   const [user, setUser] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
