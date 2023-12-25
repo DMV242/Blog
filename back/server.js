@@ -7,7 +7,10 @@ const bodyParser = require("body-parser");
 const { routeArticle } = require("./routes/routesArticle");
 const { routesUsers } = require("./routes/routesUsers");
 const helmet = require("helmet");
-const xss = require("xss-clean")(async () => {
+const xss = require("xss-clean");
+const limiter = require("express-rate-limit");
+
+(async () => {
   try {
     await mongoose.connect(process.env.CONNECTIONPATH, {
       useNewUrlParser: true,
@@ -23,7 +26,13 @@ const corsOptions = {
 
   optionsSuccessStatus: 200,
 };
-
+app.use(
+  limiter.rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 30,
+    legacyHeaders: false,
+  })
+);
 app.use(bodyParser.json());
 app.use(xss());
 app.use(bodyParser.urlencoded({ extended: true }));
