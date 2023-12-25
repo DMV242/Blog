@@ -6,10 +6,11 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { routeArticle } = require("./routes/routesArticle");
 const { routesUsers } = require("./routes/routesUsers");
-
-(async () => {
+const xss = require("xss-clean")(async () => {
   try {
-    await mongoose.connect(process.env.CONNECTIONPATH);
+    await mongoose.connect(process.env.CONNECTIONPATH, {
+      useNewUrlParser: true,
+    });
     console.log("connection réussie à la base données");
   } catch (err) {
     console.log(err.message);
@@ -23,7 +24,7 @@ const corsOptions = {
 };
 
 app.use(bodyParser.json());
-
+app.use(xss());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
