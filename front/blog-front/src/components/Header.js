@@ -26,6 +26,8 @@ const Header = ({
     onCreate(true);
     showUpdateForm(false);
     showModal(true);
+    signInForm(false);
+    signUpForm(false);
   }
 
   return (
