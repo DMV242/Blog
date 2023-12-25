@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const { routeArticle } = require("./routes/routesArticle");
 const { routesUsers } = require("./routes/routesUsers");
+const helmet = require("helmet");
 const xss = require("xss-clean")(async () => {
   try {
     await mongoose.connect(process.env.CONNECTIONPATH, {
@@ -27,7 +28,7 @@ app.use(bodyParser.json());
 app.use(xss());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-
+app.use(helmet());
 app.route("/api/blog").get((req, res) => {
   res.status(200).send({
     message: "Bienvenue sur l'api de David Mvoula",
