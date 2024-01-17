@@ -29,7 +29,7 @@ const corsOptions = {
 app.use(
   limiter.rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 30,
+    limit: 150,
     legacyHeaders: false,
   })
 );
