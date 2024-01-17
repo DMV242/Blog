@@ -31,6 +31,8 @@ app.use(
     windowMs: 15 * 60 * 1000,
     limit: 150,
     legacyHeaders: false,
+
+    validate: { xForwardedForHeader: false },
   })
 );
 app.use(bodyParser.json());
