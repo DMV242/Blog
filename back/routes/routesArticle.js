@@ -10,11 +10,6 @@ import {
 } from "../controllers/articleController";
 import protect from "../middlewares/protect";
 
-
-h1{
-
-}
-
 export function routeArticle(app) {
   // CRUD ROUTES
   app.route("/api/addArticle/").post(protect, createArticle);
